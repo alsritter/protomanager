@@ -16,14 +16,13 @@ func TestManager_GetMethod(t *testing.T) {
 	)
 
 	basePath, _ := os.Getwd()
-
 	pms, err := New(&Config{
 		ProtoDir:         basePath,
-		ProtoImportPaths: []string{"co3k/protobuf-swagger-example"},
+		ProtoImportPaths: []string{"temporary/alsritter/protobuf-examples"},
 		Synchronization: &synchronization.Config{
 			Enable:     true,
-			StorageDir: "",
-			Repository: []*synchronization.Repository{{"git@github.com:co3k/protobuf-swagger-example.git", "master"}},
+			StorageDir: "temporary",
+			Repository: []*synchronization.Repository{{"git@github.com:alsritter/protobuf-examples.git", "main"}},
 		},
 	}, clog)
 	if err != nil {
@@ -33,5 +32,12 @@ func TestManager_GetMethod(t *testing.T) {
 	err = pms.Start(ctx, cancel)
 	if err != nil {
 		t.Error(err)
+	}
+
+	d, ext := pms.GetMethod("/hello.Hello/SayHello")
+	if ext {
+		t.Logf("查询到的服务全地址为：%#v", d.GetFullyQualifiedName())
+	} else {
+		t.Error("不存在")
 	}
 }
