@@ -5,12 +5,14 @@ import (
 	"log"
 	"testing"
 	"time"
+
+	"github.com/alsritter/protomanager/util/logger"
 )
 
 func TestStartServiceAsync(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 
-	StartServiceAsync(ctx, log.Default(), cancel, func() error {
+	StartServiceAsync(ctx, logger.NewDefault("test"), cancel, func() error {
 		// Here is the initialization project
 		log.Println("TestServer Starting...")
 		return nil
